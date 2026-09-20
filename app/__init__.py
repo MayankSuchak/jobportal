@@ -113,3 +113,7 @@ def create_app(config_class=Config):
         db.create_all()
 
     return app
+
+# Expose default app instance for WSGI servers like Gunicorn (gunicorn app:app)
+app = create_app()
+
