@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: nexthire-jobportal
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn run:app"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.11.9
