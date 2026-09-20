@@ -1,0 +1,27 @@
+Sample Resume - Alex Rivera
+=========================================
+Headline: Senior Full-Stack Engineer
+Email: candidate@example.com
+Phone: +1 (555) 234-5678
+Location: San Francisco, CA
+
+SUMMARY
+Passionate software engineer with 6+ years of experience building high-throughput web applications and scalable microservices. Enthusiast for clean architecture, automated testing, and developer tooling.
+
+TECHNICAL SKILLS
+- Languages & Frameworks: Python, Flask, Django, FastAPI, JavaScript, TypeScript, React, Next.js
+- Databases & Storage: PostgreSQL, MySQL, Redis, MongoDB
+- Cloud & DevOps: Docker, Kubernetes, AWS (ECS, S3, RDS, Lambda), CI/CD, Terraform
+- Methodologies: RESTful APIs, Microservices, Agile, Test-Driven Development (pytest)
+
+EXPERIENCE
+Senior Backend Engineer | CloudScale Inc. (2022 - Present)
+- Architected payment processing microservices handling 50k+ daily transactions.
+- Improved API response latency by 45% by introducing Redis caching and SQL indexing.
+
+Full-Stack Developer | Apex Software (2019 - 2022)
+- Built interactive customer dashboards using React and Flask.
+- Maintained 95%+ unit test code coverage.
+
+EDUCATION
+B.S. in Computer Science - University of California, Berkeley (2015 - 2019)

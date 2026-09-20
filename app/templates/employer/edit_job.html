@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Edit Job: {{ job.title }} - NextHire{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-light border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h3 class="fw-bold text-dark mb-1">Edit Job Listing</h3>
+                <p class="text-muted small mb-0">Modify specifications, compensation, or active status for this role.</p>
+            </div>
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <a href="{{ url_for('employer.manage_jobs') }}" class="btn btn-outline-secondary btn-sm fw-semibold">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Jobs
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    
+                    <form method="POST" action="{{ url_for('employer.edit_job', job_id=job.id) }}" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        <h5 class="fw-bold text-dark mb-3"><i class="bi bi-briefcase text-primary me-2"></i>Job Information</h5>
+                        
+                        <div class="mb-4">
+                            {{ form.title.label(class="form-label") }}
+                            {{ form.title(class="form-control form-control-lg" + (" is-invalid" if form.title.errors else "")) }}
+                            {% for error in form.title.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                {{ form.category_id.label(class="form-label") }}
+                                {{ form.category_id(class="form-select" + (" is-invalid" if form.category_id.errors else "")) }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.job_type.label(class="form-label") }}
+                                {{ form.job_type(class="form-select") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.experience_level.label(class="form-label") }}
+                                {{ form.experience_level(class="form-select") }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.location.label(class="form-label") }}
+                                {{ form.location(class="form-control" + (" is-invalid" if form.location.errors else "")) }}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check form-switch">
+                                {{ form.is_remote(class="form-check-input", id="remoteToggle") }}
+                                <label class="form-check-label fw-semibold text-dark small" for="remoteToggle">
+                                    This is a 100% Remote position
+                                </label>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-3 pt-3 border-top"><i class="bi bi-cash-stack text-primary me-2"></i>Compensation & Skills</h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-3">
+                                {{ form.salary_currency.label(class="form-label") }}
+                                {{ form.salary_currency(class="form-select") }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form.salary_min.label(class="form-label") }}
+                                {{ form.salary_min(class="form-control") }}
+                            </div>
+
+                            <div class="col-md-5">
+                                {{ form.salary_max.label(class="form-label") }}
+                                {{ form.salary_max(class="form-control") }}
+                            </div>
+
+                            <div class="col-12">
+                                {{ form.skills_required.label(class="form-label") }}
+                                {{ form.skills_required(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-3 pt-3 border-top"><i class="bi bi-file-text text-primary me-2"></i>Detailed Description</h5>
+
+                        <div class="mb-4">
+                            {{ form.description.label(class="form-label") }}
+                            {{ form.description(class="form-control" + (" is-invalid" if form.description.errors else "")) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form.requirements.label(class="form-label") }}
+                            {{ form.requirements(class="form-control") }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form.benefits.label(class="form-label") }}
+                            {{ form.benefits(class="form-control") }}
+                        </div>
+
+                        <div class="row g-3 mb-4 pt-3 border-top">
+                            <div class="col-md-6">
+                                {{ form.deadline.label(class="form-label") }}
+                                {{ form.deadline(class="form-control", type="date") }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.status.label(class="form-label") }}
+                                {{ form.status(class="form-select") }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-3 pt-4 border-top">
+                            <a href="{{ url_for('employer.manage_jobs') }}" class="btn btn-light-custom px-4">Cancel</a>
+                            <button type="submit" class="btn btn-primary-gradient px-5 fw-bold">
+                                Save Changes
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Explore Categories - NextHire{% endblock %}
+
+{% block content %}
+<div class="py-5 bg-light border-bottom text-center">
+    <div class="container">
+        <h2 class="fw-bold text-dark mb-2">Browse Jobs by Category</h2>
+        <p class="text-muted">Find opportunities tailored to your specialized skills and domain expertise.</p>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4">
+        {% for cat in categories %}
+        <div class="col-xl-3 col-lg-4 col-md-6">
+            <a href="{{ url_for('main.jobs', category=cat.id) }}" class="category-card h-100">
+                <div class="category-icon-box">
+                    <i class="bi {{ cat.icon_class }}"></i>
+                </div>
+                <h5 class="fw-bold mb-2 text-dark">{{ cat.name }}</h5>
+                <p class="text-muted small mb-3">{{ cat.description or 'Explore top listings in this field.' }}</p>
+                <div class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1">
+                    {{ cat.active_jobs_count }} active jobs
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

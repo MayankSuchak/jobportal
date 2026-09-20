@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% block title %}NextHire - Find Your Dream Career & Hire Top Talent{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-wrapper">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <span class="badge bg-primary-subtle text-primary fw-bold px-3 py-2 rounded-pill mb-3 text-uppercase" style="letter-spacing: 1px; font-size: 0.78rem;">
+                    🚀 Over {{ stats.jobs }}+ Active Tech & Creative Jobs
+                </span>
+                <h1 class="hero-title mb-3">
+                    Discover Your Next Career Move <span style="background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Without Limits</span>
+                </h1>
+                <p class="hero-subtitle mb-4">
+                    Explore curated opportunities at top startups and high-growth engineering teams. Apply directly with one click.
+                </p>
+
+                <!-- Search Bar Container -->
+                <div class="hero-search-box mb-4">
+                    <form action="{{ url_for('main.jobs') }}" method="GET" class="row g-2 align-items-center">
+                        <div class="col-md-5 d-flex align-items-center ps-3">
+                            <i class="bi bi-search text-muted fs-5"></i>
+                            <input type="text" name="q" class="form-control hero-search-input" placeholder="Job title, skills, or company...">
+                        </div>
+                        <div class="col-md-4 d-flex align-items-center ps-3 border-start-md">
+                            <i class="bi bi-geo-alt text-muted fs-5"></i>
+                            <input type="text" name="location" class="form-control hero-search-input" placeholder="City or 'Remote'...">
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary-gradient w-100 py-2 fw-bold d-flex align-items-center justify-content-center gap-2">
+                                <span>Search Jobs</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Popular Search Keywords -->
+                <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
+                    <span class="text-muted small fw-semibold">Trending:</span>
+                    <a href="{{ url_for('main.jobs', q='Python') }}" class="hero-badge-chip">Python</a>
+                    <a href="{{ url_for('main.jobs', q='React') }}" class="hero-badge-chip">React</a>
+                    <a href="{{ url_for('main.jobs', is_remote=1) }}" class="hero-badge-chip">Remote Only</a>
+                    <a href="{{ url_for('main.jobs', q='AI') }}" class="hero-badge-chip">AI / ML</a>
+                    <a href="{{ url_for('main.jobs', job_type='Full-time') }}" class="hero-badge-chip">Full-time</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Live Platform Stats -->
+<section class="py-4 border-bottom bg-white">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
+                <div class="stat-number text-primary">{{ stats.jobs }}+</div>
+                <div class="stat-label">Active Job Openings</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-number text-dark">{{ stats.companies }}+</div>
+                <div class="stat-label">Verified Tech Employers</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-number text-info">{{ stats.seekers }}+</div>
+                <div class="stat-label">Registered Candidates</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-number text-success">{{ stats.applications }}+</div>
+                <div class="stat-label">Applications Submitted</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Job Categories Grid -->
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="text-primary fw-bold text-uppercase small" style="letter-spacing: 0.5px;">Browse By Industry</span>
+                <h3 class="fw-bold text-dark mt-1">Explore Popular Categories</h3>
+            </div>
+            <a href="{{ url_for('main.categories') }}" class="btn btn-sm btn-outline-primary fw-semibold rounded-pill px-3">
+                View All Categories <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            {% for cat in categories[:8] %}
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <a href="{{ url_for('main.jobs', category=cat.id) }}" class="category-card">
+                    <div class="category-icon-box">
+                        <i class="bi {{ cat.icon_class }}"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1 text-dark">{{ cat.name }}</h5>
+                    <p class="text-muted small mb-0">{{ cat.active_jobs_count }} open positions</p>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Featured / Latest Jobs -->
+<section class="py-5 bg-white border-top border-bottom">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="text-primary fw-bold text-uppercase small" style="letter-spacing: 0.5px;">Featured Opportunities</span>
+                <h3 class="fw-bold text-dark mt-1">Latest Open Roles</h3>
+            </div>
+            <a href="{{ url_for('main.jobs') }}" class="btn btn-sm btn-outline-primary fw-semibold rounded-pill px-3">
+                Browse All {{ stats.jobs }} Jobs <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-4">
+            {% for job in latest_jobs %}
+            <div class="col-lg-6">
+                <div class="job-card">
+                    <div class="d-flex justify-content-between align-items-start gap-3">
+                        <div class="d-flex gap-3">
+                            <div class="company-logo-box">
+                                {% if job.employer.company_profile and job.employer.company_profile.logo_filename %}
+                                    <img src="{{ url_for('static', filename='uploads/logos/' + job.employer.company_profile.logo_filename) }}" alt="Logo">
+                                {% else %}
+                                    {{ job.employer.company_profile.company_name[:2].upper() if job.employer.company_profile else 'CO' }}
+                                {% endif %}
+                            </div>
+                            <div>
+                                <a href="{{ url_for('main.job_detail', job_id=job.id) }}" class="text-dark text-decoration-none">
+                                    <h5 class="fw-bold mb-1 hover-primary">{{ job.title }}</h5>
+                                </a>
+                                <div class="text-muted small fw-semibold">
+                                    {{ job.employer.company_profile.company_name if job.employer.company_profile else 'Confidential Company' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if current_user.is_authenticated and current_user.is_seeker %}
+                            <button type="button" 
+                                    class="btn-bookmark btn-bookmark-ajax {% if current_user.has_saved(job.id) %}bookmarked{% endif %}" 
+                                    data-job-id="{{ job.id }}" 
+                                    title="Save Job">
+                                <i class="bi {% if current_user.has_saved(job.id) %}bi-bookmark-fill{% else %}bi-bookmark{% endif %}"></i>
+                            </button>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 my-3">
+                        <span class="tag-badge tag-badge-primary">
+                            <i class="bi bi-briefcase me-1"></i> {{ job.job_type }}
+                        </span>
+                        <span class="tag-badge">
+                            <i class="bi bi-geo-alt me-1"></i> {{ job.location }}
+                        </span>
+                        {% if job.is_remote %}
+                            <span class="tag-badge tag-badge-emerald">
+                                <i class="bi bi-wifi me-1"></i> Remote
+                            </span>
+                        {% endif %}
+                        <span class="tag-badge tag-badge-blue">
+                            <i class="bi bi-cash-stack me-1"></i> {{ job.formatted_salary }}
+                        </span>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                        <span class="text-muted small">
+                            <i class="bi bi-clock me-1"></i> Posted {{ job.created_at|timeago }}
+                        </span>
+                        <a href="{{ url_for('main.job_detail', job_id=job.id) }}" class="btn btn-sm btn-primary-gradient px-3 fw-semibold">
+                            View Details <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="py-5" style="background: var(--primary-gradient);">
+    <div class="container text-white text-center py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="fw-bold mb-3">Are You Hiring Great Talent?</h2>
+                <p class="lead opacity-90 mb-4">Post your open positions on NextHire and connect with thousands of active tech professionals today.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url_for('employer.post_job') }}" class="btn btn-light btn-lg px-4 fw-bold text-primary shadow">
+                        <i class="bi bi-plus-circle me-1"></i> Post a Job Now
+                    </a>
+                    <a href="{{ url_for('auth.register_employer') }}" class="btn btn-outline-light btn-lg px-4 fw-semibold">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

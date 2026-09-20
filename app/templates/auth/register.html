@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block title %}Register - NextHire{% endblock %}
+
+{% block content %}
+<div class="py-5" style="background: radial-gradient(circle at 50% 10%, rgba(79, 70, 229, 0.06), transparent 50%); min-height: 85vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                
+                <!-- Role Switch Header Tabs -->
+                <div class="d-flex justify-content-center mb-4">
+                    <div class="bg-white p-1 rounded-pill shadow-sm border d-inline-flex">
+                        <a href="{{ url_for('auth.register_seeker') }}" class="btn rounded-pill px-4 py-2 fw-semibold {% if active_role == 'seeker' %}btn-primary-gradient text-white{% else %}text-muted{% endif %}">
+                            <i class="bi bi-person me-1"></i> I'm a Job Seeker
+                        </a>
+                        <a href="{{ url_for('auth.register_employer') }}" class="btn rounded-pill px-4 py-2 fw-semibold {% if active_role == 'employer' %}btn-primary-gradient text-white{% else %}text-muted{% endif %}">
+                            <i class="bi bi-building me-1"></i> I'm an Employer
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <div class="text-center mb-4">
+                            {% if active_role == 'seeker' %}
+                                <h3 class="fw-bold text-dark">Create Candidate Account</h3>
+                                <p class="text-muted small">Discover top tech roles, apply in seconds, and track all applications.</p>
+                            {% else %}
+                                <h3 class="fw-bold text-dark">Create Employer Account</h3>
+                                <p class="text-muted small">Reach thousands of qualified developers, designers, and specialists.</p>
+                            {% endif %}
+                        </div>
+
+                        <!-- Form -->
+                        <form method="POST" action="{% if active_role == 'seeker' %}{{ url_for('auth.register_seeker') }}{% else %}{{ url_for('auth.register_employer') }}{% endif %}" novalidate>
+                            {{ form.hidden_tag() }}
+
+                            {% if active_role == 'seeker' %}
+                                <div class="mb-3">
+                                    {{ form.full_name.label(class="form-label") }}
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-person"></i></span>
+                                        {{ form.full_name(class="form-control border-start-0 ps-0" + (" is-invalid" if form.full_name.errors else ""), placeholder="e.g. Alex Morgan") }}
+                                    </div>
+                                    {% for error in form.full_name.errors %}
+                                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="row g-2 mb-3">
+                                    <div class="col-md-7">
+                                        {{ form.company_name.label(class="form-label") }}
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-building"></i></span>
+                                            {{ form.company_name(class="form-control border-start-0 ps-0" + (" is-invalid" if form.company_name.errors else ""), placeholder="Acme Inc.") }}
+                                        </div>
+                                        {% for error in form.company_name.errors %}
+                                            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-5">
+                                        {{ form.industry.label(class="form-label") }}
+                                        {{ form.industry(class="form-control" + (" is-invalid" if form.industry.errors else ""), placeholder="e.g. Fintech, AI") }}
+                                        {% for error in form.industry.errors %}
+                                            <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-6">
+                                    {{ form.username.label(class="form-label") }}
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 text-muted">@</span>
+                                        {{ form.username(class="form-control border-start-0 ps-0" + (" is-invalid" if form.username.errors else ""), placeholder="alex_dev") }}
+                                    </div>
+                                    {% for error in form.username.errors %}
+                                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.email.label(class="form-label") }}
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-envelope"></i></span>
+                                        {{ form.email(class="form-control border-start-0 ps-0" + (" is-invalid" if form.email.errors else ""), placeholder="alex@example.com") }}
+                                    </div>
+                                    {% for error in form.email.errors %}
+                                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mb-4">
+                                <div class="col-md-6">
+                                    {{ form.password.label(class="form-label") }}
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-lock"></i></span>
+                                        {{ form.password(class="form-control border-start-0 ps-0" + (" is-invalid" if form.password.errors else ""), placeholder="Min 6 characters") }}
+                                    </div>
+                                    {% for error in form.password.errors %}
+                                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-md-6">
+                                    {{ form.confirm_password.label(class="form-label") }}
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-check2-circle"></i></span>
+                                        {{ form.confirm_password(class="form-control border-start-0 ps-0" + (" is-invalid" if form.confirm_password.errors else ""), placeholder="Repeat password") }}
+                                    </div>
+                                    {% for error in form.confirm_password.errors %}
+                                        <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                {{ form.submit(class="btn btn-primary-gradient py-2 fs-6 fw-bold") }}
+                            </div>
+
+                            <div class="text-center mt-3">
+                                <span class="text-muted small">Already have an account?</span>
+                                <a href="{{ url_for('auth.login') }}" class="small fw-semibold text-primary text-decoration-none ms-1">Sign In</a>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

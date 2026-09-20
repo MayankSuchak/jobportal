@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Edit Candidate Profile - NextHire{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-light border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h3 class="fw-bold text-dark mb-1">Candidate Profile</h3>
+                <p class="text-muted small mb-0">Keep your professional details up-to-date for employers.</p>
+            </div>
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <a href="{{ url_for('seeker.dashboard') }}" class="btn btn-outline-secondary btn-sm fw-semibold">
+                    <i class="bi bi-arrow-left me-1"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    
+                    <form method="POST" action="{{ url_for('seeker.profile') }}" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+
+                        <h5 class="fw-bold text-dark mb-3"><i class="bi bi-person-lines-fill text-primary me-2"></i>Personal Details</h5>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                {{ form.full_name.label(class="form-label") }}
+                                {{ form.full_name(class="form-control" + (" is-invalid" if form.full_name.errors else "")) }}
+                                {% for error in form.full_name.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.headline.label(class="form-label") }}
+                                {{ form.headline(class="form-control" + (" is-invalid" if form.headline.errors else "")) }}
+                                {% for error in form.headline.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.phone.label(class="form-label") }}
+                                {{ form.phone(class="form-control" + (" is-invalid" if form.phone.errors else "")) }}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{ form.location.label(class="form-label") }}
+                                {{ form.location(class="form-control" + (" is-invalid" if form.location.errors else "")) }}
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-3 pt-3 border-top"><i class="bi bi-mortarboard text-primary me-2"></i>Professional Background</h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                {{ form.experience_years.label(class="form-label") }}
+                                {{ form.experience_years(class="form-control" + (" is-invalid" if form.experience_years.errors else "")) }}
+                            </div>
+
+                            <div class="col-md-8">
+                                {{ form.education.label(class="form-label") }}
+                                {{ form.education(class="form-control" + (" is-invalid" if form.education.errors else "")) }}
+                            </div>
+
+                            <div class="col-12">
+                                {{ form.skills.label(class="form-label") }}
+                                {{ form.skills(class="form-control" + (" is-invalid" if form.skills.errors else "")) }}
+                                <div class="form-text small">Separate skills with commas (e.g. Python, Django, PostgreSQL, Docker, AWS)</div>
+                            </div>
+
+                            <div class="col-12">
+                                {{ form.bio.label(class="form-label") }}
+                                {{ form.bio(class="form-control" + (" is-invalid" if form.bio.errors else "")) }}
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-3 pt-3 border-top"><i class="bi bi-file-earmark-pdf text-primary me-2"></i>Resume / CV File</h5>
+
+                        <div class="p-3 bg-light rounded-3 mb-4 border">
+                            {% if profile.resume_filename %}
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi bi-file-earmark-pdf-fill text-danger fs-3"></i>
+                                        <div>
+                                            <div class="fw-bold text-dark small">Current Resume Uploaded</div>
+                                            <span class="text-muted small">{{ profile.resume_filename }}</span>
+                                        </div>
+                                    </div>
+                                    <a href="{{ url_for('seeker.download_resume', filename=profile.resume_filename) }}" class="btn btn-sm btn-outline-primary fw-semibold">
+                                        <i class="bi bi-download me-1"></i> Download
+                                    </a>
+                                </div>
+                            {% else %}
+                                <div class="text-muted small mb-2"><i class="bi bi-info-circle me-1"></i> No resume uploaded yet. Upload a PDF or Word doc to apply faster.</div>
+                            {% endif %}
+
+                            <label class="form-label small fw-bold text-dark">Upload New Resume File</label>
+                            {{ form.resume(class="form-control", accept=".pdf,.doc,.docx") }}
+                            <div class="form-text small">Supported formats: PDF, DOC, DOCX. Max file size: 10MB.</div>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-3 pt-3 border-top"><i class="bi bi-globe text-primary me-2"></i>Online Profiles & Links</h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                {{ form.linkedin_url.label(class="form-label") }}
+                                {{ form.linkedin_url(class="form-control", placeholder="https://linkedin.com/in/username") }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.github_url.label(class="form-label") }}
+                                {{ form.github_url(class="form-control", placeholder="https://github.com/username") }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.portfolio_url.label(class="form-label") }}
+                                {{ form.portfolio_url(class="form-control", placeholder="https://yourportfolio.com") }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-3 pt-4 border-top">
+                            <a href="{{ url_for('seeker.dashboard') }}" class="btn btn-light-custom px-4">Cancel</a>
+                            {{ form.submit(class="btn btn-primary-gradient px-5 fw-bold") }}
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

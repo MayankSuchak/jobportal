@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Company Profile & Branding - NextHire{% endblock %}
+
+{% block content %}
+<div class="py-4 bg-light border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h3 class="fw-bold text-dark mb-1">Company Profile</h3>
+                <p class="text-muted small mb-0">Build your employer brand and showcase your company culture to prospective hires.</p>
+            </div>
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <a href="{{ url_for('employer.dashboard') }}" class="btn btn-outline-secondary btn-sm fw-semibold">
+                    <i class="bi bi-arrow-left me-1"></i> Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
+                    
+                    <form method="POST" action="{{ url_for('employer.company_profile') }}" enctype="multipart/form-data" novalidate>
+                        {{ form.hidden_tag() }}
+
+                        <h5 class="fw-bold text-dark mb-3"><i class="bi bi-building text-primary me-2"></i>Company Brand Identity</h5>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-7">
+                                {{ form.company_name.label(class="form-label") }}
+                                {{ form.company_name(class="form-control" + (" is-invalid" if form.company_name.errors else "")) }}
+                                {% for error in form.company_name.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-5">
+                                {{ form.industry.label(class="form-label") }}
+                                {{ form.industry(class="form-control" + (" is-invalid" if form.industry.errors else "")) }}
+                                {% for error in form.industry.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                {{ form.tagline.label(class="form-label") }}
+                                {{ form.tagline(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="p-3 bg-light rounded-3 mb-4 border">
+                            <label class="form-label small fw-bold text-dark"><i class="bi bi-image me-1"></i>Company Logo</label>
+                            
+                            {% if company.logo_filename %}
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="company-logo-box" style="width: 60px; height: 60px;">
+                                    <img src="{{ url_for('static', filename='uploads/logos/' + company.logo_filename) }}" alt="Current Logo">
+                                </div>
+                                <span class="text-muted small">Current Logo: {{ company.logo_filename }}</span>
+                            </div>
+                            {% endif %}
+
+                            {{ form.logo(class="form-control", accept="image/*") }}
+                            <div class="form-text small">Upload PNG, JPG, or SVG image (Recommended size 200x200px)</div>
+                        </div>
+
+                        <h5 class="fw-bold text-dark mb-3 pt-3 border-top"><i class="bi bi-info-circle text-primary me-2"></i>Company Details</h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                {{ form.company_size.label(class="form-label") }}
+                                {{ form.company_size(class="form-select") }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form.founded_year.label(class="form-label") }}
+                                {{ form.founded_year(class="form-control", placeholder="e.g. 2018") }}
+                            </div>
+
+                            <div class="col-md-4">
+                                {{ form.location.label(class="form-label") }}
+                                {{ form.location(class="form-control", placeholder="e.g. Austin, TX") }}
+                            </div>
+
+                            <div class="col-12">
+                                {{ form.website.label(class="form-label") }}
+                                {{ form.website(class="form-control", placeholder="https://yourcompany.com") }}
+                            </div>
+
+                            <div class="col-12">
+                                {{ form.about.label(class="form-label") }}
+                                {{ form.about(class="form-control") }}
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-3 pt-4 border-top">
+                            <a href="{{ url_for('employer.dashboard') }}" class="btn btn-light-custom px-4">Cancel</a>
+                            {{ form.submit(class="btn btn-primary-gradient px-5 fw-bold") }}
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
